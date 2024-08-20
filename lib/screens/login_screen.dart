@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:testapp/screens/forgot_password_screen.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:testapp/main.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -18,6 +19,8 @@ class _LoginScreenState extends State<LoginScreen> {
   // Note: This is a form key which is used to hold the state of our form and this is the recommended way to do so.
   final _formKey = GlobalKey<FormState>();
   bool _rememberMe = false;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   // Sign in button styles
   final ButtonStyle btnStyle = ElevatedButton.styleFrom(
@@ -34,8 +37,10 @@ class _LoginScreenState extends State<LoginScreen> {
   // Email input field widget
   Widget _buildEmailField() {
     return TextFormField(
+      controller: emailController,
       decoration: InputDecoration(
         labelText: 'Email',
+        
         contentPadding: const EdgeInsets.only(top: 10.0, left: 10.0),
         // prefixIcon: Icon(Icons.email, color: Colors.black87),
         hintText: 'Enter your email',
@@ -60,6 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
   // Password input field widget
   Widget _buildPasswordField() {
     return TextFormField(
+      controller: passwordController,
       decoration: InputDecoration(
         labelText: 'Password',
         contentPadding: const EdgeInsets.only(top: 10.0, left: 10.0),
@@ -141,11 +147,23 @@ class _LoginScreenState extends State<LoginScreen> {
       width: double.infinity,
       child: ElevatedButton(
         style: btnStyle,
-        onPressed: () => print('Signed in'),
+        onPressed:_emailAndPassword,
         child: const Text('Sign in'),
       ),
     );
   }
+
+    Future<void> _emailAndPassword() async {
+    
+       
+    var resp=    await auth.signInWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+      print(resp);
+   
+  }
+
 
   @override
   Widget build(BuildContext context) {

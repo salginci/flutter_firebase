@@ -1,8 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:testapp/screens/home_screen.dart';
 
-void main() => runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+   app = await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+   auth = FirebaseAuth.instanceFor(app: app);
 
+  runApp(const MyApp());
+  }
+late final FirebaseAuth auth;
+late final FirebaseApp app;
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
